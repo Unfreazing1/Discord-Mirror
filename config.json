@@ -1,0 +1,13 @@
+{
+  "token": "INSERT YOUR TOKEN HERE",
+  "mirrors": [
+    {
+      "channel_ids": [
+        "INSERT A CHANNEL ID HERE"
+      ],
+      "webhooks_urls": [
+        "INSERT A WEBHOOK URL HERE"
+      ]
+    }
+  ]
+}
