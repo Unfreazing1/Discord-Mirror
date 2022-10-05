@@ -10,8 +10,9 @@ const client = new Client({ checkUpdate: false });
 function parseWebhookToken(webhookUrl) {
   const index = webhookUrl.lastIndexOf("/");
 
-  if (index == -1)
+  if (index == -1) {
     throw "Invalid Webhook URL";
+  }
 
   return webhookUrl.substring(index + 1, webhookUrl.length);
 }
@@ -24,13 +25,15 @@ function parseWebhookToken(webhookUrl) {
 function parseWebhookId(webhookUrl) {
   const indexEnd = webhookUrl.lastIndexOf("/");
 
-  if (indexEnd == -1)
+  if (indexEnd == -1) {
     throw "Invalid Webhook URL";
+  }
 
   const indexStart = webhookUrl.lastIndexOf("/", indexEnd - 1);
 
-  if (indexStart == -1)
+  if (indexStart == -1) {
     throw "Invalid Webhook URL";
+  }
 
   return webhookUrl.substring(indexStart + 1, indexEnd);
 }
