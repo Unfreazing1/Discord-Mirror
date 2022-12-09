@@ -68,23 +68,38 @@ client.on('ready', async () => {
 });
 
 client.on('messageCreate', async (message) => {
-  if (message.content.length == 0 && message.embeds.length == 0 && message.attachments.length == 0) {
+  // Skip empty messages.
+  if (!message.content.length && !message.embeds.length && !message.attachments.length) {
     return;
   }
-  
+
   // Skip "Only you can see this" messages.
   if (message.flags & MessageFlags.Ephemeral) {
     return;
   }
-
+  
   const webhooks = channelWebhookMapping[message.channelId];
   
   if (!webhooks) {
     return;
   }
 
-  // Prevent: "Message content must be a non-empty string" with embeds.
+  // Prevent "Message content must be a non-empty string" with embeds.
   let content = message.content.length ? message.content : " ";
+  
+  // Prevent "MessageEmbed field values must be non-empty strings".
+  const emtpyChar = "᲼";
+
+  for (const embed of message.embeds) {
+    for (const field of embed.fields) {
+      if (!field.name.length) {
+        field.name = emtpyChar;
+      }
+      if (!field.value.length) {
+        field.value = emtpyChar;
+      }
+    }
+  }
 
   for (const attachment of message.attachments) {
     content += "\n" + attachment[1].url;
