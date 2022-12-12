@@ -18,9 +18,9 @@ I take no responsibility for using this bot against Discord TOS.
 
 `mention_everyone`: every time a message is sent through a webhook, mention @everyone in the channel of the message.
 
-`minutes_online`: how many minutes the bot will stay online before going offline.
+`minutes_online`: how many minutes the bot will stay online before going offline. If you want the bot to never go offline, set this to a high value.
 
-`minutes_offline`: how many minutes the bot will stay offline before going back online.
+`minutes_offline`: how many minutes the bot will stay offline before going back online (these two options are used to bypass discord anti-bots).
 
 `mirrors:` is a list of:
 - `channel_ids:` list of channel ids where when a message is sent, it is mirrored. (you can get the ID of a channel by enabling the **Developer mode** in your discord settings and **Right-Click** -> **Copy ID** on a channel).
