@@ -12,9 +12,15 @@ I take no responsibility for using this bot against Discord TOS.
 3. Inside the project folder, run: `node discordMirror` from the terminal.
 4. You are now mirroring! >:)
 
-## Configuration
+## Configuration guide
 `token:` is the token of the discord account that will mirror. Learn how to find your token [here](https://www.androidauthority.com/get-discord-token-3149920/).\
 (Note that the token must be that of a personal discord account and not a bot).
+
+`mention_everyone`: every time a message is sent through a webhook, mention @everyone in the channel of the message.
+
+`minutes_online`: how many minutes the bot will stay online before going offline.
+
+`minutes_offline`: how many minutes the bot will stay offline before going back online.
 
 `mirrors:` is a list of:
 - `channel_ids:` list of channel ids where when a message is sent, it is mirrored. (you can get the ID of a channel by enabling the **Developer mode** in your discord settings and **Right-Click** -> **Copy ID** on a channel).
@@ -24,6 +30,9 @@ I take no responsibility for using this bot against Discord TOS.
 ```json
 {
   "token": "rMQ3QFqk9sJVq8rQgLT0cB3QQzP9nhp8FpmQ2ZEe95JKscSOg9hAT5UBRps13rODuIUSeg",
+  "mention_everyone": true,
+  "minutes_online": 120,
+  "minutes_offline": 5,
   "mirrors": [
     {
       "channel_ids": [
@@ -36,4 +45,7 @@ I take no responsibility for using this bot against Discord TOS.
   ]
 }
 ```
-When a message in the channel by the ID: `937789483387898821` is sent, it will be mirrored to the webhook: `https://discord.com/api/webhooks/126244492068114215/famHbkoNLIV_Y2hVYL9YTWoQE7ocpjs_9UrWvVK6yEDjPYw3u3xEe`.
+Explaination of the config.json above:
+- When a message in the channel by the ID: `937789483387898821` is sent, it will be mirrored to the webhook: `https://discord.com/api/webhooks/126244492068114215/famHbkoNLIV_Y2hVYL9YTWoQE7ocpjs_9UrWvVK6yEDjPYw3u3xEe`.
+- Upon mirroring a message, **@everyone** is mentioned in the channel of the webhook.
+- Every 2 hours the bot will go offline for 5 minutes before going back online.

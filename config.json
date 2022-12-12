@@ -1,5 +1,8 @@
 {
   "token": "INSERT YOUR TOKEN HERE",
+  "mention_everyone": false,
+  "start_time": 120,
+  "minutes_offline": 5,
   "mirrors": [
     {
       "channel_ids": [
