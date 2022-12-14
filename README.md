@@ -3,14 +3,14 @@ Make your account behave like a bot and mirror messages from a server to another
 I take no responsibility for using this bot against Discord TOS.
 
 ## Requirements
-- [Node](https://nodejs.org/en/download/) (v16.17.0+)
-- [discord.js-selfbot-v13](https://www.npmjs.com/package/discord.js-selfbot-v13)
+- [NodeJS](https://nodejs.org/en/download/) (v16.17.0+)
 
 ## How to use
 1. Install the requirements.
 2. Configure `config.json`.
-3. Inside the project folder, run: `node discordMirror` from the terminal.
-4. You are now mirroring! >:)
+3. Install the dependencies by running: `npm install` inside the project directory from the terminal.
+4. Finally run: `node discordMirror.js`.
+5. You are now mirroring! >:)
 
 ## Configuration guide
 `token:` is the token of the discord account that will mirror. Learn how to find your token [here](https://www.androidauthority.com/get-discord-token-3149920/).\
