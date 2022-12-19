@@ -80,7 +80,7 @@ function bindClientEvents(client) {
   
     // Optionally mention everyone when a message from a webhook is sent.
     if (config['mention_everyone'] && message.webhookId) {
-      message.channel.send('@everyone');
+      message.channel.send('@everyone').catch(console.error);
     }
     
     const webhooks = channelWebhookMapping[message.channelId];
