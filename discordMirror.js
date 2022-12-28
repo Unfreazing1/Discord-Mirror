@@ -62,85 +62,72 @@ function loadConfigValues() {
 
 loadConfigValues();
 
-function bindClientEvents(client) {
-  client.on('ready', async () => {
-    console.log(`${client.user.username} is now mirroring >:)! (will stay online for ${config['minutes_online']} minutes.`);
-  });
+const client = new Client({ checkUpdate: false });
+
+client.on('ready', async () => {
+  console.log(`${client.user.username} is now mirroring >:)!`);
+  client.user.setPresence({ status: config['status'] });
+});
+
+client.on('messageCreate', async (message) => {
+  // Skip empty messages.
+  if (!message.content.length && !message.embeds.length && !message.attachments.length) {
+    return;
+  }
+
+  // Skip 'Only you can see this' messages.
+  if (message.flags & MessageFlags.Ephemeral) {
+    return;
+  }
+
+  const webhooks = channelWebhookMapping[message.channelId];
   
-  client.on('messageCreate', async (message) => {
-    // Skip empty messages.
-    if (!message.content.length && !message.embeds.length && !message.attachments.length) {
-      return;
-    }
+  if (!webhooks) {
+    return;
+  }
+
+  const emptyChar = '᲼';
   
-    // Skip 'Only you can see this' messages.
-    if (message.flags & MessageFlags.Ephemeral) {
-      return;
-    }
-  
-    // Optionally mention everyone when a message from a webhook is sent.
-    if (config['mention_everyone'] && message.webhookId) {
-      message.channel.send('@everyone').catch(console.error);
-    }
-    
-    const webhooks = channelWebhookMapping[message.channelId];
-    
-    if (!webhooks) {
-      return;
-    }
-  
-    // Prevent 'Message content must be a non-empty string' with embeds.
-    let content = message.content.length ? message.content : ' ';
-    
-    // Prevent 'MessageEmbed field values must be non-empty strings'.
-    const emptyChar = '᲼';
-  
-    for (const embed of message.embeds) {
-      for (const field of embed.fields) {
-        if (!field.name.length) {
-          field.name = emptyChar;
-        }
-        if (!field.value.length) {
-          field.value = emptyChar;
-        }
+  // Prevent 'MessageEmbed field values must be non-empty strings'.
+  for (const embed of message.embeds) {
+    for (const field of embed.fields) {
+      if (!field.name.length) {
+        field.name = emptyChar;
+      }
+      if (!field.value.length) {
+        field.value = emptyChar;
       }
     }
-  
-    for (const attachment of message.attachments) {
-      content += '\n' + attachment[1].url;
+  }
+
+  if (!message.content.length) {
+    // Prevent 'Message content must be a non-empty string' with embeds.
+    if (message.embeds.length) {
+      message.content = emptyChar;
     }
+  }
+  else {
+    const mentionReplaceList = config['mentions'][message.guildId];
   
-    for (const webhook of webhooks) {
-      webhook.send({
-        content: content,
-        username: message.author.username,
-        avatarURL: message.author.avatarURL(),
-        embeds: message.embeds
-      }).catch(console.error);
+    if (mentionReplaceList) {
+      for (const replacePair of mentionReplaceList) {
+        message.content = message.content.replaceAll(replacePair['original'], replacePair['replaced']);
+      }
     }
-  });
-}
+  }
 
-/*
-* Switch between online and offline to bypass discord anti-bots.
-*/
-function doLifeCycle() {
-  const msOnline = Math.max(2147483647, config['minutes_online'] * 60000);
-  const msOffline = Math.max(2147483647, config['minutes_offline'] * 60000);
+  for (const attachment of message.attachments) {
+    message.content += '\n' + attachment[1].url;
+  }
 
-  const client = new Client({ checkUpdate: false });
-  bindClientEvents(client);
-  client.login(config['token']);
+  for (const webhook of webhooks) {
+    webhook.send({
+      content: message.content,
+      username: message.author.username,
+      avatarURL: message.author.avatarURL(),
+      embeds: message.embeds
+    }).catch(console.error);
+  }
+});
 
-  setTimeout(() => {
-    client.destroy();
-    console.log(`${client.user.username} is no longer mirroring (will stay offline for ${config['minutes_offline']} minutes).`);
-  
-    setTimeout(() => {
-      doLifeCycle();
-    }, msOffline);
-
-  }, msOnline);
-}
-
-doLifeCycle();
+client.login(config['token']);
