@@ -4,7 +4,7 @@ I take no responsibility for using this bot against Discord TOS.
 
 ## Features
 - **Send messages disguised as the original sender.**
-- **Replace mentions from mirrored messages to match a valid mention on your server.**
+- **Replace mentions of mirrored messages to match a valid mention on your server.**
 - **Allow customization of status (online, invisible, idle, busy).**
 - **Allow mirroring one or more messages to one or more webhooks.**
 - **Optimized and lightweight.**
@@ -45,7 +45,7 @@ Mirrored message:\
     "INSERT_SERVER_ID_HERE": [
       {
         "original": "INSERT_ORIGINAL_ID_HERE",
-        "replaced": "INSERT_NEW_ID_HERE"
+        "replaced": "INSERT_REPLACED_ID_HERE"
       }
     ]
   }
