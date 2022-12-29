@@ -15,7 +15,7 @@
     "INSERT_SERVER_ID_HERE": [
       {
         "original": "INSERT_ORIGINAL_ID_HERE",
-        "replaced": "INSERT_NEW_ID_HERE"
+        "replaced": "INSERT_REPLACED_ID_HERE"
       }
     ]
   }
