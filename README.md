@@ -10,9 +10,9 @@ I take no responsibility for using this bot against Discord TOS.
 - **Optimized and lightweight.**
 
 ## Showcase
-> Original message:\
+> Original message (from server A):\
 ![](https://i.imgur.com/ogelJ23.png)\
-Mirrored message:\
+Mirrored message (to server B):\
 ![](https://i.imgur.com/C42OT64.png)
 
 ## Requirements
