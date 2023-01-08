@@ -10,7 +10,7 @@ function parseWebhookToken(webhookUrl) {
   const index = webhookUrl.lastIndexOf('/');
 
   if (index == -1) {
-    throw 'Invalid Webhook URL';
+    throw 'Invalid Webhook URL in config.json';
   }
 
   return webhookUrl.substring(index + 1, webhookUrl.length);
@@ -25,13 +25,13 @@ function parseWebhookId(webhookUrl) {
   const indexEnd = webhookUrl.lastIndexOf('/');
 
   if (indexEnd == -1) {
-    throw 'Invalid Webhook URL';
+    throw 'Invalid Webhook URL in config.json';
   }
 
   const indexStart = webhookUrl.lastIndexOf('/', indexEnd - 1);
 
   if (indexStart == -1) {
-    throw 'Invalid Webhook URL';
+    throw 'Invalid Webhook URL in config.json';
   }
 
   return webhookUrl.substring(indexStart + 1, indexEnd);
@@ -100,19 +100,22 @@ client.on('messageCreate', async (message) => {
     }
   }
 
-  if (!message.content.length) {
-    // Prevent 'Message content must be a non-empty string' with embeds.
-    if (message.embeds.length) {
-      message.content = emptyChar;
-    }
-  }
-  else {
+  const mentionLength = "<#000000000000000000>".length;
+  
+  // Only attempt to replace mentions on messages that could contain one.
+  if (message.content.length > mentionLength) {
     const mentionReplaceList = config['mentions'][message.guildId];
   
     if (mentionReplaceList) {
       for (const replacePair of mentionReplaceList) {
         message.content = message.content.replaceAll(replacePair['original'], replacePair['replaced']);
       }
+    }
+  }
+  else if (!message.content.length) {
+    // Prevent 'Message content must be a non-empty string' with embeds.
+    if (message.embeds.length) {
+      message.content = emptyChar;
     }
   }
 
